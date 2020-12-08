@@ -199,11 +199,9 @@ gchar*  g_find_program_in_path  (const gchar *program);
 
 /* Bit tests
  */
-G_INLINE_FUNC gint	g_bit_nth_lsf (gulong  mask,
-				       gint    nth_bit);
-G_INLINE_FUNC gint	g_bit_nth_msf (gulong  mask,
-				       gint    nth_bit);
-G_INLINE_FUNC guint	g_bit_storage (gulong  number);
+gint	g_bit_nth_lsf (gulong  mask, gint    nth_bit);
+gint	g_bit_nth_msf (gulong  mask, gint    nth_bit);
+guint	g_bit_storage (gulong  number);
 
 /* Trash Stacks
  * elements need to be >= sizeof (gpointer)
@@ -214,103 +212,13 @@ struct _GTrashStack
   GTrashStack *next;
 };
 
-G_INLINE_FUNC void	g_trash_stack_push	(GTrashStack **stack_p,
-						 gpointer      data_p);
-G_INLINE_FUNC gpointer	g_trash_stack_pop	(GTrashStack **stack_p);
-G_INLINE_FUNC gpointer	g_trash_stack_peek	(GTrashStack **stack_p);
-G_INLINE_FUNC guint	g_trash_stack_height	(GTrashStack **stack_p);
+void	g_trash_stack_push(GTrashStack **stack_p, gpointer      data_p);
+gpointer	g_trash_stack_pop	(GTrashStack **stack_p);
+gpointer	g_trash_stack_peek	(GTrashStack **stack_p);
+guint	g_trash_stack_height	(GTrashStack **stack_p);
 
 /* inline function implementations
  */
-#if defined (G_CAN_INLINE) || defined (__G_UTILS_C__)
-G_INLINE_FUNC gint
-g_bit_nth_lsf (gulong mask,
-	       gint   nth_bit)
-{
-  do
-    {
-      nth_bit++;
-      if (mask & (1 << (gulong) nth_bit))
-	return nth_bit;
-    }
-  while (nth_bit < 32);
-  return -1;
-}
-G_INLINE_FUNC gint
-g_bit_nth_msf (gulong mask,
-	       gint   nth_bit)
-{
-  if (nth_bit < 0)
-    nth_bit = GLIB_SIZEOF_LONG * 8;
-  do
-    {
-      nth_bit--;
-      if (mask & (1 << (gulong) nth_bit))
-	return nth_bit;
-    }
-  while (nth_bit > 0);
-  return -1;
-}
-G_INLINE_FUNC guint
-g_bit_storage (gulong number)
-{
-  /*register*/ guint n_bits = 0;
-  
-  do
-    {
-      n_bits++;
-      number >>= 1;
-    }
-  while (number);
-  return n_bits;
-}
-G_INLINE_FUNC void
-g_trash_stack_push (GTrashStack **stack_p,
-		    gpointer      data_p)
-{
-  GTrashStack *data = (GTrashStack *) data_p;
-
-  data->next = *stack_p;
-  *stack_p = data;
-}
-G_INLINE_FUNC gpointer
-g_trash_stack_pop (GTrashStack **stack_p)
-{
-  GTrashStack *data;
-
-  data = *stack_p;
-  if (data)
-    {
-      *stack_p = data->next;
-      /* NULLify private pointer here, most platforms store NULL as
-       * subsequent 0 bytes
-       */
-      data->next = NULL;
-    }
-
-  return data;
-}
-G_INLINE_FUNC gpointer
-g_trash_stack_peek (GTrashStack **stack_p)
-{
-  GTrashStack *data;
-
-  data = *stack_p;
-
-  return data;
-}
-G_INLINE_FUNC guint
-g_trash_stack_height (GTrashStack **stack_p)
-{
-  GTrashStack *data;
-  guint i = 0;
-
-  for (data = *stack_p; data; data = data->next)
-    i++;
-
-  return i;
-}
-#endif  /* G_CAN_INLINE || __G_UTILS_C__ */
 
 /* Glib version.
  * we prefix variable declarations so they can

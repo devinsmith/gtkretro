@@ -1133,4 +1133,95 @@ G_CONST_RETURN gchar *
 
 #endif /* ENABLE_NLS */
 
+void g_trash_stack_push (GTrashStack **stack_p, gpointer data_p)
+{
+  GTrashStack *data = (GTrashStack *) data_p;
+
+  data->next = *stack_p;
+  *stack_p = data;
+}
+
+gpointer
+g_trash_stack_pop (GTrashStack **stack_p)
+{
+  GTrashStack *data;
+
+  data = *stack_p;
+  if (data)
+    {
+      *stack_p = data->next;
+      /* NULLify private pointer here, most platforms store NULL as
+       * subsequent 0 bytes
+       */
+      data->next = NULL;
+    }
+
+  return data;
+}
+
+gpointer
+g_trash_stack_peek (GTrashStack **stack_p)
+{
+  GTrashStack *data;
+
+  data = *stack_p;
+
+  return data;
+}
+
+guint
+g_trash_stack_height (GTrashStack **stack_p)
+{
+  GTrashStack *data;
+  guint i = 0;
+
+  for (data = *stack_p; data; data = data->next)
+    i++;
+
+  return i;
+}
+
+gint
+g_bit_nth_lsf (gulong mask,
+	       gint   nth_bit)
+{
+  do
+    {
+      nth_bit++;
+      if (mask & (1 << (gulong) nth_bit))
+	return nth_bit;
+    }
+  while (nth_bit < 32);
+  return -1;
+}
+
+gint
+g_bit_nth_msf (gulong mask,
+	       gint   nth_bit)
+{
+  if (nth_bit < 0)
+    nth_bit = GLIB_SIZEOF_LONG * 8;
+  do
+    {
+      nth_bit--;
+      if (mask & (1 << (gulong) nth_bit))
+	return nth_bit;
+    }
+  while (nth_bit > 0);
+  return -1;
+}
+
+guint
+g_bit_storage (gulong number)
+{
+  /*register*/ guint n_bits = 0;
+  
+  do
+    {
+      n_bits++;
+      number >>= 1;
+    }
+  while (number);
+  return n_bits;
+}
 
