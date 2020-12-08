@@ -538,7 +538,7 @@ typedef struct
   unsigned short ch;
   unsigned char canon_offset;
   unsigned char compat_offset;
-  unsigned char *expansion;
+  char *expansion;
 } decomposition;
 
 static decomposition decomp_table[] =

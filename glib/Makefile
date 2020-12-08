@@ -76,12 +76,8 @@ endif
 ######################
 
 all :				\
-	config.h		\
 	glibconfig.h	\
 	$(DLL)
-
-config.h: config.h.win32
-	copy config.h.win32 config.h
 
 ################ glib
 

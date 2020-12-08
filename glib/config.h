@@ -117,8 +117,10 @@
 /* Define if you have the <sys/time.h> header file.  */
 /* #undef HAVE_SYS_TIME_H */
 
-/* Define if you have the <unistd.h> header file.  */
-/* #undef HAVE_UNISTD_H */
+#ifndef WIN32
+#define HAVE_UNISTD_H 1
+#define HAVE_SYS_TIME_H 1
+#endif
 
 /* Define if you have the <wchar.h> header file.  */
 #define HAVE_WCHAR_H 1

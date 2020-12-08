@@ -393,7 +393,6 @@ static void
 g_io_channel_purge (GIOChannel *channel)
 {
   GError *err = NULL;
-  GIOStatus status;
 
   g_return_if_fail (channel != NULL);
 
@@ -406,7 +405,7 @@ g_io_channel_purge (GIOChannel *channel)
       flags = g_io_channel_get_flags (channel);
       g_io_channel_set_flags (channel, flags & ~G_IO_FLAG_NONBLOCK, NULL);
 
-      status = g_io_channel_flush (channel, &err);
+      g_io_channel_flush (channel, &err);
 
       if (err)
 	{ /* No way to return the error */

@@ -86,7 +86,7 @@ g_unicode_canonical_ordering (gunichar *string,
     }
 }
 
-static guchar *
+static gchar *
 find_decomposition (gunichar ch,
 		    gboolean compat)
 {
@@ -144,7 +144,7 @@ gunichar *
 g_unicode_canonical_decomposition (gunichar ch,
 				   gsize   *result_len)
 {
-  guchar *decomp = find_decomposition (ch, FALSE);
+  gchar *decomp = find_decomposition (ch, FALSE);
   gunichar *r;
 
   if (decomp)
@@ -255,7 +255,7 @@ _g_utf8_normalize_wc (const gchar    *str,
     {
       gunichar wc = g_utf8_get_char (p);
 
-      guchar *decomp = find_decomposition (wc, do_compat);
+      gchar *decomp = find_decomposition (wc, do_compat);
 
       if (decomp)
 	{
@@ -280,7 +280,7 @@ _g_utf8_normalize_wc (const gchar    *str,
   while ((max_len < 0 || p < str + max_len) && *p)
     {
       gunichar wc = g_utf8_get_char (p);
-      guchar *decomp;
+      gchar *decomp;
       int cc;
       gsize old_n_wc = n_wc;
 	  

@@ -473,9 +473,8 @@ g_logv (const gchar   *log_domain,
 	const gchar   *format,
 	va_list	       args1)
 {
-  va_list args2;
   gchar buffer[1025];
-  register gint i;
+  gint i;
   
   log_level &= G_LOG_LEVEL_MASK;
   if (!log_level)
@@ -1135,8 +1134,8 @@ printf_string_upper_bound (const gchar *format,
 		  break;
 		default:
 		  if (may_warn)
-		    g_warning ("%s%s", G_GNUC_PRETTY_FUNCTION,
-			       "unable to handle `%c' while parsing format",
+		    g_warning ("%sunable to handle `%c' while parsing format",
+            G_GNUC_PRETTY_FUNCTION,
 			       c);
 		  break;
 		}
