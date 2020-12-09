@@ -12,7 +12,7 @@ C_SRCS = fnmatch.c gtkcheckbutton.c gtkfilesel.c gtkinputdialog.c gtkmisc.c \
 	gtkscrolledwindow.c gtktooltips.c gtkwidget.c gtkalignment.c gtkcombo.c \
 	gtkgamma.c gtklabel.c gtkpacker.c gtkselection.c gtktree.c gtkwindow.c \
 	gtkarg.c gtkcontainer.c gtkgc.c gtklayout.c gtkpaned.c gtkseparator.c \
-	gtktreeitem.c simple.c gtkargcollector.c gtkctree.c gtkhandlebox.c \
+	gtktreeitem.c gtkargcollector.c gtkctree.c gtkhandlebox.c \
 	gtklist.c gtkpixmap.c gtksignal.c gtkarrow.c \
 	gtkcurve.c gtkhbbox.c gtklistitem.c gtkplug.c gtksocket.c \
 	gtkaspectframe.c gtkdata.c gtkhbox.c gtkmain.c \
@@ -38,7 +38,7 @@ AR? = ar
 RM = rm -f
 
 DEFINES =
-INTERNAL_CFLAGS = -I. -I../glib -I../include -I../ $(DEFINES) -I../gdk
+INTERNAL_CFLAGS = -I. -I../glib -I.. -I../include -I../include/gtk $(DEFINES) -I../gdk
 CPPFLAGS += -MMD -MP -MT $@
 
 LIB = libdrsgtk

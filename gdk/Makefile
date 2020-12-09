@@ -18,7 +18,7 @@ CXX? = g++
 AR? = ar
 RM = rm -f
 
-INTERNAL_CFLAGS = -I. -I../glib -I../include -I../ -DUSE_SHM
+INTERNAL_CFLAGS = -I. -I../glib -I../include -I../include/gdk -DUSE_SHM
 CPPFLAGS += -MMD -MP -MT $@
 
 LIB = libdrsgdk

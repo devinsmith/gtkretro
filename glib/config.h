@@ -79,7 +79,6 @@
 
 /* Define if you have the strcasecmp function.  */
 #define HAVE_STRCASECMP 1
-#define strcasecmp _stricmp
 
 /* Define if you have the strchr function.  */
 #define HAVE_STRCHR 1
