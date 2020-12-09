@@ -57,7 +57,7 @@ OBJS =			\
 	gutf8.o		\
 	gutils.o
 
-CFLAGS = -I. -I.. -I../include -DG_LOG_DOMAIN=g_log_domain_glib -DGLIB_COMPILATION -DHAVE_CONFIG_H -DUSE_LIBICONV -DG_IMPLEMENT_INLINES
+CFLAGS = -I. -I../include -I../include/glib -DG_LOG_DOMAIN=g_log_domain_glib -DGLIB_COMPILATION -DHAVE_CONFIG_H -DUSE_LIBICONV -DG_IMPLEMENT_INLINES
 
 ifeq ($(OS),Windows_NT)
 	CC = gcc
@@ -76,7 +76,6 @@ endif
 ######################
 
 all :				\
-	glibconfig.h	\
 	$(DLL)
 
 ################ glib
