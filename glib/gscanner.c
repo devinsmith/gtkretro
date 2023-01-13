@@ -24,10 +24,10 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
-/* 
+/*
  * MT safe
  */
 
@@ -35,17 +35,18 @@
 #include <config.h>
 #endif
 
-#include	<stdlib.h>
-#include	<stdarg.h>
-#include	<string.h>
-#include	<stdio.h>
-#include	"glib.h"
+#include <sys/stat.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <string.h>
+#include <stdio.h>
+#include "glib.h"
 #ifdef HAVE_UNISTD_H
-#include	<unistd.h>
+#include <unistd.h>
 #endif
-#include	<errno.h>
+#include <errno.h>
 #ifdef G_OS_WIN32
-#include	<io.h>		/* For _read() */
+#include <io.h>		/* For _read() */
 #endif
 
 /* --- defines --- */
@@ -1102,6 +1103,25 @@ g_scanner_unexp_token (GScanner		*scanner,
   
   g_free (token_string);
   g_free (expected_string);
+}
+
+gint
+g_scanner_stat_mode (const gchar *filename)
+{
+  struct stat  *stat_buf;
+  gint		st_mode;
+  
+  stat_buf = g_new0 (struct stat, 1);
+#ifdef HAVE_LSTAT  
+  lstat (filename, stat_buf);
+#else
+  stat (filename, stat_buf);
+#endif
+  st_mode = stat_buf->st_mode;
+  
+  g_free (stat_buf);
+  
+  return st_mode;
 }
 
 static void
