@@ -1,0 +1,4 @@
+[submodule "deps/glib"]
+	path = deps/glib
+	url = https://github.com/devinsmith/glibretro.git
+	branch = master
