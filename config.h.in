@@ -1,0 +1,15 @@
+/* Define to 1 if you have the <sys/select.h> header file. */
+#cmakedefine HAVE_SYS_SELECT_H 1
+
+/* Define to 1 if you have the <ipc.h> header file. */
+#cmakedefine HAVE_IPC_H 1
+
+/* Define to 1 if you have the <shm.h> header file. */
+#cmakedefine HAVE_SHM_H 1
+
+/* Define to 1 if you have the <X11/extensions/XShm.h> header file */
+#cmakedefine HAVE_XSHM_H 1
+
+#cmakedefine HAVE_SHAPE_EXT 1
+
+#define XINPUT_XFREE 1
