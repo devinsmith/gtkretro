@@ -296,15 +296,19 @@ gtk_hscale_draw (GtkWidget    *widget,
     }
 }
 
-static void 
+static void
 gtk_hscale_clear_background (GtkRange    *range)
 {
   gint x, y, width, height;
 
   g_return_if_fail (range != NULL);
+  x = 0;
+  y = 0;
+  width = 0;
+  height = 0;
 
   gtk_hscale_pos_background (GTK_HSCALE (range), &x, &y, &width, &height);
-  
+
   gtk_widget_queue_clear_area (GTK_WIDGET (range),
                                x, y, width, height);
 }
