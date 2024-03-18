@@ -1,0 +1,12 @@
+prefix="@CMAKE_INSTALL_PREFIX@"
+exec_prefix="${prefix}"
+libdir="${prefix}/lib"
+includedir="${prefix}/include"
+
+Name: GTK+
+Description: GIMP Tool Kit
+Version: @VERSION@
+Requires: gdk
+Libs: -L${libdir} -lgtk
+Cflags:
+

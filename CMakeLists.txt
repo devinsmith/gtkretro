@@ -40,7 +40,8 @@ if (X11_Xshape_FOUND)
 endif()
 
 configure_file(config.h.in config.h)
-#configure_file(glib.pc.in glib.pc @ONLY)
+configure_file(gdk.pc.in gdk.pc @ONLY)
+configure_file(gtk+.pc.in gtk+.pc @ONLY)
 
 #add_subdirectory(deps)
 add_subdirectory(src)
@@ -49,9 +50,13 @@ add_subdirectory(src)
 
 #set(INCLUDE_INSTALL_DIR "include") # relative
 
-#install(FILES
-#  ${CMAKE_CURRENT_BINARY_DIR}/glib.pc
-#  DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+install(FILES
+  ${CMAKE_CURRENT_BINARY_DIR}/gdk.pc
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+
+install(FILES
+  ${CMAKE_CURRENT_BINARY_DIR}/gtk+.pc
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 
 #configure_package_config_file(mlk.cmake.in
 #  ${CMAKE_CURRENT_BINARY_DIR}/mlk.cmake
