@@ -45,7 +45,7 @@ set(CMAKE_INSTALL_LIBDIR "lib" CACHE STRING "Specify the name of the directory w
 
 add_library(${LIB_NAME} SHARED ${SOURCES})
 
-set(LIBS ${CMAKE_THREAD_LIBS_INIT})
+set(LIBS ${CMAKE_THREAD_LIBS_INIT} X11::Xi)
 
 target_link_libraries(${LIB_NAME} ${LIBS})
 

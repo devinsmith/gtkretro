@@ -7,6 +7,6 @@ Name: GTK+
 Description: GIMP Tool Kit
 Version: @VERSION@
 Requires: gdk
-Libs: -L${libdir} -lgtk
+Libs: -L${libdir} -lgtk-1.2 -lm
 Cflags:
 

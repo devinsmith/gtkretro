@@ -6,6 +6,6 @@ includedir="${prefix}/include"
 Name: GDK
 Description: GIMP Drawing Kit
 Version: @VERSION@
-Libs: -L${libdir} -lgdk -lXi -lXext -lX11 -lm
+Libs: -L${libdir} -lgdk-1.2
 Cflags: -I"${includedir}/gtk+-@LIB_MAJOR_VERSION@.@LIB_MINOR_VERSION@"
 
