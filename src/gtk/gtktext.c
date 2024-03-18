@@ -4457,6 +4457,7 @@ set_vertical_scroll (GtkText* text)
   data.pixel_height = 0;
   data.mark.index = 0;
   data.mark.offset = 0;
+  data.mark.property = 0;
 
   line_params_iterate (text, &mark, NULL, FALSE, &data, set_vertical_scroll_iterator);
   
