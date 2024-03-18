@@ -326,7 +326,7 @@ gdk_pixmap_skip_string (gchar *buffer)
 }
 
 /* Xlib crashed ince at a color name lengths around 125 */
-#define MAX_COLOR_LEN 120
+#define MAX_COLOR_LEN 132
 
 static gchar*
 gdk_pixmap_extract_color (gchar *buffer)
