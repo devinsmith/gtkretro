@@ -1061,21 +1061,21 @@ static guint32 *DM_565 = NULL;
 static void
 gdk_rgb_preprocess_dm_565 (void)
 {
-  int i;
+  int i, j;
   guint32 dith;
 
-  if (DM_565 == NULL)
-    {
-      DM_565 = g_new (guint32, DM_WIDTH * DM_HEIGHT);
-      for (i = 0; i < DM_WIDTH * DM_HEIGHT; i++)
-	{
-	  dith = DM[0][i] >> 3;
-	  DM_565[i] = (dith << 20) | dith | (((7 - dith) >> 1) << 10);
+  if (DM_565 == NULL) {
+    DM_565 = g_new (guint32, DM_WIDTH * DM_HEIGHT);
+    for (j = 0; j < DM_HEIGHT; j++) {
+      for (i = 0; i < DM_WIDTH; i++) {
+        dith = DM[j][i] >> 3;
+        DM_565[i] = (dith << 20) | dith | (((7 - dith) >> 1) << 10);
 #ifdef VERBOSE
-	  g_print ("%i %x %x\n", i, dith, DM_565[i]);
+        g_print ("%i %x %x\n", i, dith, DM_565[i]);
 #endif
-	}
+      }
     }
+  }
 }
 
 static void
