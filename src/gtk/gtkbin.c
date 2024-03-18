@@ -77,11 +77,9 @@ gtk_bin_get_type (void)
 static void
 gtk_bin_class_init (GtkBinClass *class)
 {
-  GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
   GtkContainerClass *container_class;
 
-  object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
   container_class = (GtkContainerClass*) class;
 

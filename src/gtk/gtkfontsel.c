@@ -738,7 +738,7 @@ gtk_font_selection_init(GtkFontSelection *fontsel)
   row_text[2] = "";
   for (i = 0; i < GTK_XLFD_NUM_FIELDS; i++)
     {
-      row_text[0] = _(xlfd_field_names[i]);
+      row_text[0] = (char *)_(xlfd_field_names[i]);
       gtk_clist_append(GTK_CLIST(fontsel->info_clist), row_text);
       gtk_clist_set_shift(GTK_CLIST(fontsel->info_clist), i, 0, 0, 4);
       gtk_clist_set_shift(GTK_CLIST(fontsel->info_clist), i, 1, 0, 4);
@@ -955,7 +955,6 @@ gtk_font_selection_expose_list (GtkWidget		*widget,
 				gpointer		 data)
 {
   GtkFontSelection *fontsel;
-  FontInfo *font_info;
   GList *selection;
   gint index;
   
@@ -964,8 +963,6 @@ gtk_font_selection_expose_list (GtkWidget		*widget,
 #endif
   fontsel = GTK_FONT_SELECTION(data);
   
-  font_info = fontsel_info->font_info;
-      
   /* Try to scroll the font family clist to the selected item */
   selection = GTK_CLIST(fontsel->font_clist)->selection;
   if (selection)
@@ -1918,10 +1915,9 @@ gtk_font_selection_show_font_info (GtkFontSelection *fontsel)
       if (fontsel->font->type == GDK_FONT_FONTSET)
 	{
 	  XFontStruct **font_structs;
-	  gint num_fonts;
 	  gchar **font_names;
 	  
-	  num_fonts = XFontsOfFontSet (GDK_FONT_XFONT(fontsel->font),
+	  XFontsOfFontSet (GDK_FONT_XFONT(fontsel->font),
 				       &font_structs, &font_names);
 	  status = XGetFontProperty(font_structs[0], font_atom, &atom);
 	}
@@ -3459,10 +3455,6 @@ gtk_font_selection_dialog_get_type (void)
 static void
 gtk_font_selection_dialog_class_init (GtkFontSelectionDialogClass *klass)
 {
-  GtkObjectClass *object_class;
-  
-  object_class = (GtkObjectClass*) klass;
-  
   font_selection_dialog_parent_class = gtk_type_class (GTK_TYPE_WINDOW);
 }
 

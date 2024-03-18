@@ -165,7 +165,6 @@ static void
 gtk_check_button_draw (GtkWidget    *widget,
 		       GdkRectangle *area)
 {
-  GtkCheckButton *check_button;
   GtkToggleButton *toggle_button;
   GtkBin *bin;
   GdkRectangle child_area;
@@ -174,7 +173,6 @@ gtk_check_button_draw (GtkWidget    *widget,
   g_return_if_fail (GTK_IS_CHECK_BUTTON (widget));
   g_return_if_fail (area != NULL);
   
-  check_button = GTK_CHECK_BUTTON (widget);
   toggle_button = GTK_TOGGLE_BUTTON (widget);
   bin = GTK_BIN (widget);
   
@@ -316,7 +314,6 @@ static gint
 gtk_check_button_expose (GtkWidget      *widget,
 			 GdkEventExpose *event)
 {
-  GtkCheckButton *check_button;
   GtkToggleButton *toggle_button;
   GtkBin *bin;
   GdkEventExpose child_event;
@@ -325,7 +322,6 @@ gtk_check_button_expose (GtkWidget      *widget,
   g_return_val_if_fail (GTK_IS_CHECK_BUTTON (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
   
-  check_button = GTK_CHECK_BUTTON (widget);
   toggle_button = GTK_TOGGLE_BUTTON (widget);
   bin = GTK_BIN (widget);
   
@@ -371,7 +367,6 @@ gtk_real_check_button_draw_indicator (GtkCheckButton *check_button,
 				      GdkRectangle   *area)
 {
   GtkWidget *widget;
-  GtkToggleButton *toggle_button;
   GtkStateType state_type;
   GtkShadowType shadow_type;
   GdkRectangle restrict_area;
@@ -386,7 +381,6 @@ gtk_real_check_button_draw_indicator (GtkCheckButton *check_button,
   g_return_if_fail (GTK_IS_CHECK_BUTTON (check_button));
   
   widget = GTK_WIDGET (check_button);
-  toggle_button = GTK_TOGGLE_BUTTON (check_button);
   
   if (GTK_WIDGET_DRAWABLE (check_button))
     {

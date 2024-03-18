@@ -30,6 +30,7 @@ cmake_minimum_required(VERSION 3.13.4)
 #configure_file(glib.pc.in glib.pc @ONLY)
 
 add_subdirectory(gdk)
+add_subdirectory(gtk)
 
 #include(CMakePackageConfigHelpers)
 

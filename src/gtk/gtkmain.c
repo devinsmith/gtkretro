@@ -31,7 +31,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <unistd.h>		/* For getuid() and friends */
-//#include <gmodule.h>
+#include <gmodule.h>
 #include "gtkbutton.h"
 #include "gtkdnd.h"
 #include "gtkfeatures.h"
@@ -372,6 +372,56 @@ gtk_init_check (int	 *argc,
 	    }
 	}
     }
+  
+  /* load gtk modules */
+  gtk_modules = g_slist_reverse (gtk_modules);
+  for (slist = gtk_modules; slist; slist = slist->next)
+    {
+      gchar *module_name;
+      GModule *module = NULL;
+      GtkModuleInitFunc modinit_func = NULL;
+      
+      module_name = slist->data;
+      slist->data = NULL;
+      if (!(module_name[0] == '/' ||
+	    (module_name[0] == 'l' &&
+	     module_name[1] == 'i' &&
+	     module_name[2] == 'b')))
+	{
+	  gchar *old = module_name;
+	  
+	  module_name = g_strconcat ("lib", module_name, ".so", NULL);
+	  g_free (old);
+	}
+      if (g_module_supported ())
+	{
+	  module = g_module_open (module_name, G_MODULE_BIND_LAZY);
+	  if (module &&
+	      g_module_symbol (module, "gtk_module_init", (gpointer*) &modinit_func) &&
+	      modinit_func)
+	    {
+	      if (!g_slist_find (gtk_modules, (void *)modinit_func))
+		{
+		  g_module_make_resident (module);
+		  slist->data = (void *)modinit_func;
+		}
+	      else
+		{
+		  g_module_close (module);
+		  module = NULL;
+		}
+	    }
+	}
+      if (!modinit_func)
+	{
+	  g_warning ("Failed to load module \"%s\": %s",
+		     module ? g_module_name (module) : module_name,
+		     g_module_error ());
+	  if (module)
+	    g_module_close (module);
+	}
+      g_free (module_name);
+    }
 
 #ifdef ENABLE_NLS
   bindtextdomain("gtk+", GTK_LOCALEDIR);
@@ -397,6 +447,20 @@ gtk_init_check (int	 *argc,
   /* Set the 'initialized' flag.
    */
   gtk_initialized = TRUE;
+
+  /* initialize gtk modules
+   */
+  for (slist = gtk_modules; slist; slist = slist->next)
+    {
+      if (slist->data)
+	{
+	  GtkModuleInitFunc modinit;
+	  
+	  modinit = (GtkModuleInitFunc)slist->data;
+	  modinit (argc, argv);
+	}
+    }
+  g_slist_free (gtk_modules);
 
   return TRUE;
 }

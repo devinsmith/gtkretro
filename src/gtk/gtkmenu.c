@@ -465,7 +465,6 @@ gtk_menu_popup (GtkMenu		    *menu,
 		guint		     button,
 		guint32		     activate_time)
 {
-  GtkWidget *widget;
   GtkWidget *xgrab_shell;
   GtkWidget *parent;
   GdkEvent *current_event;
@@ -474,7 +473,6 @@ gtk_menu_popup (GtkMenu		    *menu,
   g_return_if_fail (menu != NULL);
   g_return_if_fail (GTK_IS_MENU (menu));
   
-  widget = GTK_WIDGET (menu);
   menu_shell = GTK_MENU_SHELL (menu);
   
   menu_shell->parent_menu_shell = parent_menu_shell;
@@ -1040,14 +1038,12 @@ gtk_menu_expose (GtkWidget	*widget,
   GtkWidget *child;
   GdkEventExpose child_event;
   GList *children;
-  GtkMenu *menu;
   
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (GTK_IS_MENU (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
 
   menu_shell = GTK_MENU_SHELL (widget);
-  menu = GTK_MENU (widget);
   
   if (GTK_WIDGET_DRAWABLE (widget))
     {

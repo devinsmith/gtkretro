@@ -816,7 +816,6 @@ gtk_entry_size_allocate (GtkWidget     *widget,
 			 GtkAllocation *allocation)
 {
   GtkEntry *entry;
-  GtkEditable *editable;
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (GTK_IS_ENTRY (widget));
@@ -824,7 +823,6 @@ gtk_entry_size_allocate (GtkWidget     *widget,
 
   widget->allocation = *allocation;
   entry = GTK_ENTRY (widget);
-  editable = GTK_EDITABLE (widget);
 
   if (GTK_WIDGET_REALIZED (widget))
     {
@@ -1184,6 +1182,7 @@ gtk_entry_key_press (GtkWidget   *widget,
 	}
       break;
     case GDK_Return:
+    case GDK_KP_Enter:
       return_val = TRUE;
       gtk_widget_activate (widget);
       break;
@@ -1743,7 +1742,7 @@ gtk_entry_insert_text (GtkEditable *editable,
 
   if (new_text_length < 0)
     {
-      new_text_nt = (gchar *)new_text;
+      new_text_nt = (guchar *)new_text;
       new_text_length = strlen (new_text);
       if (new_text_length <= 0) return;
     }
@@ -1754,7 +1753,7 @@ gtk_entry_insert_text (GtkEditable *editable,
   else
     {
       /* make a null-terminated copy of new_text */
-      new_text_nt = g_new (gchar, new_text_length + 1);
+      new_text_nt = g_new (guchar, new_text_length + 1);
       memcpy (new_text_nt, new_text, new_text_length);
       new_text_nt[new_text_length] = 0;
     }
@@ -1772,7 +1771,7 @@ gtk_entry_insert_text (GtkEditable *editable,
   /* Convert to wide characters */
   insertion_text = g_new (GdkWChar, new_text_length);
   if (entry->use_wchar)
-    insertion_length = gdk_mbstowcs (insertion_text, new_text_nt,
+    insertion_length = gdk_mbstowcs (insertion_text, (gchar *)new_text_nt,
 				     new_text_length);
   else
     for (insertion_length=0; new_text_nt[insertion_length]; insertion_length++)
@@ -1971,14 +1970,14 @@ gtk_entry_get_chars      (GtkEditable   *editable,
 	    gtk_entry_grow_text(entry);
 	  ch = entry->text[end_pos];
 	  entry->text[end_pos] = 0;
-	  mbstr = gdk_wcstombs (entry->text + start_pos);
+	  mbstr = (guchar *)gdk_wcstombs (entry->text + start_pos);
 	  entry->text[end_pos] = ch;
 	  return (gchar *)mbstr;
 	}
       else
 	{
 	  gint i;
-	  mbstr = g_new (gchar, end_pos - start_pos + 1);
+	  mbstr = g_new (guchar, end_pos - start_pos + 1);
 	  for (i=0; i<end_pos-start_pos; i++)
 	    mbstr[i] = entry->text[start_pos + i];
 	  mbstr[i] = 0;
@@ -2036,11 +2035,21 @@ gtk_entry_move_word (GtkEditable *editable,
     }
 }
 
+static gboolean
+alnum_or_ideogram (GtkEntry *entry, guint index)
+{
+  GdkWChar ch;
+  ch = entry->text[index];
+  if (entry->use_wchar)
+    return !(gdk_iswpunct (ch) || gdk_iswcntrl (ch) || gdk_iswspace (ch));
+  else
+    return !(ispunct (ch) || iscntrl (ch) || isspace (ch));
+}
+
 static void
 gtk_move_forward_word (GtkEntry *entry)
 {
   GtkEditable *editable;
-  GdkWChar *text;
   gint i;
 
   editable = GTK_EDITABLE (entry);
@@ -2054,21 +2063,12 @@ gtk_move_forward_word (GtkEntry *entry)
 
   if (entry->text && (editable->current_pos < entry->text_length))
     {
-      text = entry->text;
-      i = editable->current_pos;
-	  
-      if ((entry->use_wchar) ? (!gdk_iswalnum (text[i])) : (!isalnum (text[i])))
-	for (; i < entry->text_length; i++)
-	  {
-	    if ((entry->use_wchar) ? gdk_iswalnum (text[i]) : isalnum (text[i]))
-	      break;
-	  }
-
+      for (i = editable->current_pos; i < entry->text_length; i++)
+	if (alnum_or_ideogram (entry, i))
+	  break;
       for (; i < entry->text_length; i++)
-	{
-	  if ((entry->use_wchar) ? (!gdk_iswalnum (text[i])) : (!isalnum (text[i])))
-	    break;
-	}
+	if (!alnum_or_ideogram (entry, i))
+	  break;
 
       editable->current_pos = i;
     }
@@ -2078,7 +2078,6 @@ static void
 gtk_move_backward_word (GtkEntry *entry)
 {
   GtkEditable *editable;
-  GdkWChar *text;
   gint i;
 
   editable = GTK_EDITABLE (entry);
@@ -2092,26 +2091,19 @@ gtk_move_backward_word (GtkEntry *entry)
 
   if (entry->text && editable->current_pos > 0)
     {
-      text = entry->text;
-      i = editable->current_pos - 1;
-      if ((entry->use_wchar) ? (!gdk_iswalnum (text[i])) : (!isalnum (text[i])))
-	for (; i >= 0; i--)
-	  {
-	    if ((entry->use_wchar) ? gdk_iswalnum (text[i]) : isalnum (text[i]))
-	      break;
-	  }
+      for (i = editable->current_pos - 1; i >= 0; i--)
+	if (alnum_or_ideogram (entry, i))
+	  break;
       for (; i >= 0; i--)
-	{
-	  if ((entry->use_wchar) ? (!gdk_iswalnum (text[i])) : (!isalnum (text[i])))
-	    {
-	      i++;
-	      break;
-	    }
-	}
-	  
+	if (!alnum_or_ideogram (entry, i))
+	  {
+	    i++;
+	    break;
+	  }
+
       if (i < 0)
 	i = 0;
-	  
+  
       editable->current_pos = i;
     }
 }

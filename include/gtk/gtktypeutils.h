@@ -27,7 +27,7 @@
 #ifndef __GTK_TYPE_UTILS_H__
 #define __GTK_TYPE_UTILS_H__
 
-
+#include <stddef.h>
 #include <glib.h>
 
 
@@ -83,11 +83,7 @@ typedef enum
 
 
 /* retrive a structure offset */
-#ifdef offsetof
 #define GTK_STRUCT_OFFSET(struct, field)        ((gint) offsetof (struct, field))
-#else /* !offsetof */
-#define GTK_STRUCT_OFFSET(struct, field)        ((gint) ((gchar*) &((struct*) 0)->field))
-#endif /* !offsetof */
 
 
 /* The debugging versions of the casting macros make sure the cast is "ok"
@@ -191,6 +187,13 @@ struct _GtkTypeObject
   GtkTypeClass	*klass;
 };
 
+#ifdef __GNUC__
+struct _GtkTypeClassDummyAlign
+{
+  GtkType type;
+  guint *signals;
+};
+#endif /* __GNUC__ */
 
 /* A GtkTypeClass defines the minimum structure requirements for
  * a types class. Classes returned from gtk_type_class () and
@@ -203,7 +206,11 @@ struct _GtkTypeClass
    *  one unique identifier per class.
    */
   GtkType type;
-};
+}
+#ifdef __GNUC__
+__attribute__ ((aligned (__alignof (struct _GtkTypeClassDummyAlign))))
+#endif /* __GNUC__ */
+;
 
 
 struct _GtkArg

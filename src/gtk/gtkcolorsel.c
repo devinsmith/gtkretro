@@ -257,11 +257,9 @@ gtk_color_selection_class_init (GtkColorSelectionClass *klass)
 {
   GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
-  GtkContainerClass *container_class;
 
   object_class = (GtkObjectClass*) klass;
   widget_class = (GtkWidgetClass*) klass;
-  container_class = (GtkContainerClass*) klass;
 
   color_selection_parent_class = gtk_type_class (GTK_TYPE_VBOX);
   
@@ -1083,14 +1081,13 @@ gtk_color_selection_update_wheel (GtkColorSelection *colorsel,
                                   gint               y)
 {
   gdouble wid, heig;
-  gint res;
 
   gtk_color_selection_draw_wheel_marker (colorsel);
 
   wid = (gdouble) (colorsel->wheel_area->allocation.width) / 2.0;
   heig = (gdouble) (colorsel->wheel_area->allocation.height) / 2.0;
 
-  res = gtk_color_selection_eval_wheel (x, y, wid, heig, &colorsel->values[HUE],
+  gtk_color_selection_eval_wheel (x, y, wid, heig, &colorsel->values[HUE],
                                         &colorsel->values[SATURATION]);
 
   HSV_TO_RGB ();
@@ -1686,10 +1683,6 @@ gtk_color_selection_dialog_get_type (void)
 static void
 gtk_color_selection_dialog_class_init (GtkColorSelectionDialogClass *klass)
 {
-  GtkObjectClass *object_class;
-
-  object_class = (GtkObjectClass*) klass;
-
   color_selection_dialog_parent_class = gtk_type_class (GTK_TYPE_WINDOW);
 }
 

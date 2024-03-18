@@ -859,13 +859,60 @@ gtk_window_finalize (GtkObject *object)
   GTK_OBJECT_CLASS(parent_class)->finalize (object);
 }
 
+
+static void
+reread_rc_files ()
+{
+  if (gtk_rc_reparse_all ())
+    {
+      /* If the above returned true, some of our RC files are out
+       * of date, so we need to reset all our widgets. Our other
+       * toplevel windows will also get the message, but by
+       * then, the RC file will up to date, so we have to tell
+       * them now.
+       */
+      GList *toplevels;
+      
+      toplevels = gtk_container_get_toplevels();
+      while (toplevels)
+	{
+	  gtk_widget_reset_rc_styles (toplevels->data);
+	  toplevels = toplevels->next;
+	}
+    }
+}
+
 static void
 gtk_window_show (GtkWidget *widget)
 {
   GtkWindow *window = GTK_WINDOW (widget);
   GtkContainer *container = GTK_CONTAINER (window);
   gboolean need_resize;
+  GList *toplevels;
+  gboolean had_visible = FALSE;
 
+  /* If we have no windows shown at this point, then check for
+   * theme changes before showing the window. We really should
+   * be checking realized, not shown, but shown => realized,
+   * and checking in realize might cause reentrancy problems.
+   *
+   * Plus, this allows us to get the new size right before
+   * realizing.
+   */
+  toplevels = gtk_container_get_toplevels ();
+  while (toplevels)
+    {
+      if (GTK_WIDGET_VISIBLE (toplevels->data))
+	{
+	  had_visible = TRUE;
+	  break;
+	}
+      toplevels = toplevels->next;
+    }
+
+  if (!had_visible)
+    reread_rc_files ();
+  
   GTK_WIDGET_SET_FLAGS (widget, GTK_VISIBLE);
 
   need_resize = container->need_resize || !GTK_WIDGET_REALIZED (widget);
@@ -891,7 +938,7 @@ gtk_window_show (GtkWidget *widget)
       gtk_window_constrain_size (window,
 				 &new_geometry, new_flags,
 				 width, height,
-				 &width, &height);
+				 (gint *)&width, (gint *)&height);
 
       /* and allocate the window */
       allocation.width  = width;
@@ -985,7 +1032,13 @@ gtk_window_focus_filter (GdkXEvent *xevent,
       break;
     case EnterNotify:
     case LeaveNotify:
-      if (xev->xcrossing.detail != NotifyInferior &&
+      /* We only track the actual destination of keyboard events for real
+       * toplevels, not for embedded toplevels such as GtkPlug. The reason for
+       * this is that GtkPlug redirects events so the widget may effectively not
+       * have the focus even if it actually has the focus.
+       */
+      if (gdk_window_get_parent (GTK_WIDGET (window)->window) == GDK_ROOT_PARENT () &&
+	  xev->xcrossing.detail != NotifyInferior &&
 	  xev->xcrossing.focus && !window->window_has_focus)
 	{
 	  window->window_has_pointer_focus = (xev->xany.type == EnterNotify) ? TRUE : FALSE;
@@ -1474,23 +1527,7 @@ gtk_window_read_rcfiles (GtkWidget *widget,
 	}
     }
 
-  if (gtk_rc_reparse_all ())
-    {
-      /* If the above returned true, some of our RC files are out
-       * of date, so we need to reset all our widgets. Our other
-       * toplevel windows will also get the message, but by
-       * then, the RC file will up to date, so we have to tell
-       * them now.
-       */
-      GList *toplevels;
-      
-      toplevels = gtk_container_get_toplevels();
-      while (toplevels)
-	{
-	  gtk_widget_reset_rc_styles (toplevels->data);
-	  toplevels = toplevels->next;
-	}
-    }
+  reread_rc_files ();
 }
 
 static gint
@@ -1615,7 +1652,7 @@ gtk_window_move_resize (GtkWindow *window)
   saved_last_info = info->last;
 
   gtk_widget_size_request (widget, NULL);
-  gtk_window_compute_default_size (window, &new_width, &new_height);
+  gtk_window_compute_default_size (window, (guint *)&new_width, (guint *)&new_height);
   
   if (info->last.width < 0 ||
       info->last.width != new_width ||
@@ -2010,7 +2047,6 @@ gtk_window_compute_hints (GtkWindow   *window,
 {
   GtkWidget *widget;
   GtkWidgetAuxInfo *aux_info;
-  gint ux, uy;
   gint extra_width = 0;
   gint extra_height = 0;
   GtkWindowGeometryInfo *geometry_info;
@@ -2033,15 +2069,10 @@ gtk_window_compute_hints (GtkWindow   *window,
       extra_width = widget->requisition.width - geometry_info->widget->requisition.width;
       extra_height = widget->requisition.height - geometry_info->widget->requisition.height;
     }
-  
-  ux = 0;
-  uy = 0;
-  
+
   aux_info = gtk_object_get_data (GTK_OBJECT (widget), "gtk-aux-info");
   if (aux_info && (aux_info->x != -1) && (aux_info->y != -1))
     {
-      ux = aux_info->x;
-      uy = aux_info->y;
       *new_flags |= GDK_HINT_POS;
     }
   

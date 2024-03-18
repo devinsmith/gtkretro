@@ -290,12 +290,8 @@ gtk_handle_box_new (void)
 static void
 gtk_handle_box_destroy (GtkObject *object)
 {
-  GtkHandleBox *hb;
-
   g_return_if_fail (object != NULL);
   g_return_if_fail (GTK_IS_HANDLE_BOX (object));
-
-  hb = GTK_HANDLE_BOX (object);
 
   if (GTK_OBJECT_CLASS (parent_class)->destroy)
     (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
@@ -574,11 +570,9 @@ gtk_handle_box_size_allocate (GtkWidget     *widget,
 
   if (bin->child && GTK_WIDGET_VISIBLE (bin->child))
     {
-      GtkWidget *child;
       GtkAllocation child_allocation;
       guint border_width;
 
-      child = bin->child;
       border_width = GTK_CONTAINER (widget)->border_width;
 
       child_allocation.x = border_width;
@@ -746,8 +740,8 @@ gtk_handle_box_paint (GtkWidget      *widget,
 {
   GtkBin *bin;
   GtkHandleBox *hb;
-  guint width;
-  guint height;
+  gint width;
+  gint height;
   GdkRectangle rect;
   GdkRectangle dest;
 
@@ -755,7 +749,7 @@ gtk_handle_box_paint (GtkWidget      *widget,
   hb = GTK_HANDLE_BOX (widget);
 
   gdk_window_get_size (hb->bin_window, &width, &height);
-  
+
   if (!event)
    gtk_paint_box(widget->style,
 		 hb->bin_window,

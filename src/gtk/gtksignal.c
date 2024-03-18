@@ -1724,12 +1724,9 @@ gtk_signal_connect_by_type (GtkObject	    *object,
   GtkObjectClass *class;
   GtkHandler *handler;
   gint found_it;
-  GtkSignal *signal;
  
   g_return_val_if_fail (object != NULL, 0);
   g_return_val_if_fail (object->klass != NULL, 0);
-  
-  signal = LOOKUP_SIGNAL_ID (signal_id);
 
   /* Search through the signals for this object and make
    *  sure the one we are adding is valid. We need to perform

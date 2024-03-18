@@ -13,3 +13,4 @@
 #cmakedefine HAVE_SHAPE_EXT 1
 
 #define XINPUT_XFREE 1
+

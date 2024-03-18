@@ -299,13 +299,10 @@ gtk_hscale_draw (GtkWidget    *widget,
 static void 
 gtk_hscale_clear_background (GtkRange    *range)
 {
-  GtkWidget *widget;
   gint x, y, width, height;
-  
+
   g_return_if_fail (range != NULL);
-  
-  widget = GTK_WIDGET (range);
-  
+
   gtk_hscale_pos_background (GTK_HSCALE (range), &x, &y, &width, &height);
   
   gtk_widget_queue_clear_area (GTK_WIDGET (range),
@@ -359,7 +356,6 @@ gtk_hscale_size_allocate (GtkWidget     *widget,
                           GtkAllocation *allocation)
 {
   GtkRange *range;
-  GtkScale *scale;
   gint width, height;
   gint x, y;
   
@@ -371,7 +367,6 @@ gtk_hscale_size_allocate (GtkWidget     *widget,
   if (GTK_WIDGET_REALIZED (widget))
     {
       range = GTK_RANGE (widget);
-      scale = GTK_SCALE (widget);
       
       gtk_hscale_pos_trough (GTK_HSCALE (widget), &x, &y, &width, &height);
       

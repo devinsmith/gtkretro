@@ -78,11 +78,9 @@ gtk_tearoff_menu_item_new (void)
 static void
 gtk_tearoff_menu_item_class_init (GtkTearoffMenuItemClass *klass)
 {
-  GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
   GtkMenuItemClass *menu_item_class;
 
-  object_class = (GtkObjectClass*) klass;
   widget_class = (GtkWidgetClass*) klass;
   menu_item_class = (GtkMenuItemClass*) klass;
 

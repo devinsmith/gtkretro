@@ -1369,6 +1369,7 @@ gtk_notebook_key_press (GtkWidget   *widget,
 	gtk_notebook_switch_focus_tab (notebook, list);
       return TRUE;
     case GDK_Return:
+    case GDK_KP_Enter:
     case GDK_space:
       gtk_notebook_page_select (GTK_NOTEBOOK (widget));
       return TRUE;
@@ -2601,7 +2602,6 @@ static void
 gtk_notebook_pages_allocate (GtkNotebook   *notebook,
 			     GtkAllocation *allocation)
 {
-  GtkWidget    *widget;
   GtkContainer *container;
   GtkNotebookPage *page = NULL;
   GtkAllocation child_allocation;
@@ -2620,7 +2620,6 @@ gtk_notebook_pages_allocate (GtkNotebook   *notebook,
   if (!notebook->show_tabs || !notebook->children || !notebook->cur_page)
     return;
 
-  widget = GTK_WIDGET (notebook);
   container = GTK_CONTAINER (notebook);
 
   child_allocation.x = container->border_width;

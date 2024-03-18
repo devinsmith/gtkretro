@@ -1192,6 +1192,7 @@ gtk_pattern_spec_free_segs (GtkPatternSpec	*pspec)
   pspec->pattern_reversed = NULL;
 }
 
+#if 0
 static guint
 gtk_binding_parse_signal (GScanner       *scanner,
 			  GtkBindingSet  *binding_set,
@@ -1296,6 +1297,7 @@ gtk_binding_parse_signal (GScanner       *scanner,
 	  else
 	    done = TRUE;
 	  break;
+    /*
 	case '-':
 	  if (!need_arg)
 	    done = TRUE;
@@ -1307,6 +1309,7 @@ gtk_binding_parse_signal (GScanner       *scanner,
 	  else
 	    negate = TRUE;
 	  break;
+    */
 	case ',':
 	  seen_comma = TRUE;
 	  if (need_arg)
@@ -1349,7 +1352,9 @@ gtk_binding_parse_signal (GScanner       *scanner,
 
   return expected_token;
 }
+#endif
 
+#if 0
 static inline guint
 gtk_binding_parse_bind (GScanner       *scanner,
 			GtkBindingSet  *binding_set)
@@ -1360,7 +1365,7 @@ gtk_binding_parse_bind (GScanner       *scanner,
   g_return_val_if_fail (scanner != NULL, G_TOKEN_ERROR);
   
   g_scanner_get_next_token (scanner);
-  if (scanner->token != GTK_RC_TOKEN_BIND)
+  if (scanner->token != (GTokenType)GTK_RC_TOKEN_BIND)
     return GTK_RC_TOKEN_BIND;
   g_scanner_get_next_token (scanner);
   if (scanner->token != G_TOKEN_STRING)
@@ -1401,6 +1406,7 @@ gtk_binding_parse_bind (GScanner       *scanner,
 
   return G_TOKEN_NONE;
 }
+#endif
 
 guint
 gtk_binding_parse_binding (GScanner       *scanner)
@@ -1411,7 +1417,7 @@ gtk_binding_parse_binding (GScanner       *scanner)
   g_return_val_if_fail (scanner != NULL, G_TOKEN_ERROR);
 
   g_scanner_get_next_token (scanner);
-  if (scanner->token != GTK_RC_TOKEN_BINDING)
+  if (scanner->token != (GTokenType)GTK_RC_TOKEN_BINDING)
     return GTK_RC_TOKEN_BINDING;
   g_scanner_get_next_token (scanner);
   if (scanner->token != G_TOKEN_STRING)
@@ -1435,13 +1441,15 @@ gtk_binding_parse_binding (GScanner       *scanner)
     {
       switch (scanner->next_token)
 	{
-	  guint expected_token;
+	  //guint expected_token;
 
+    /*
 	case GTK_RC_TOKEN_BIND:
 	  expected_token = gtk_binding_parse_bind (scanner, binding_set);
 	  if (expected_token != G_TOKEN_NONE)
 	    return expected_token;
 	  break;
+    */
 	default:
 	  g_scanner_get_next_token (scanner);
 	  return '}';

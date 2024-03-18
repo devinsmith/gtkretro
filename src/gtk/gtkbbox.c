@@ -65,9 +65,6 @@ gtk_button_box_get_type (void)
 static void
 gtk_button_box_class_init (GtkButtonBoxClass *class)
 {
-  GtkWidgetClass *widget_class;
-
-  widget_class = (GtkWidgetClass*) class;
 }
 
 static void

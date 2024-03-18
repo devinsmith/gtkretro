@@ -106,12 +106,10 @@ gtk_toggle_button_class_init (GtkToggleButtonClass *class)
 {
   GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
-  GtkContainerClass *container_class;
   GtkButtonClass *button_class;
 
   object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
-  container_class = (GtkContainerClass*) class;
   button_class = (GtkButtonClass*) class;
 
   parent_class = gtk_type_class (GTK_TYPE_BUTTON);

@@ -83,11 +83,9 @@ gtk_fixed_get_type (void)
 static void
 gtk_fixed_class_init (GtkFixedClass *class)
 {
-  GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
   GtkContainerClass *container_class;
 
-  object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
   container_class = (GtkContainerClass*) class;
 

@@ -348,8 +348,9 @@ gtk_style_copy (GtkStyle *style)
       new_style->bg[i] = style->bg[i];
       new_style->text[i] = style->text[i];
       new_style->base[i] = style->base[i];
-      
-      new_style->bg_pixmap[i] = style->bg_pixmap[i];
+
+      if (style->bg_pixmap[i] && !(style->rc_style && style->rc_style->bg_pixmap_name[i]))
+	new_style->bg_pixmap[i] = gdk_pixmap_ref (style->bg_pixmap[i]);
     }
   
   gdk_font_unref (new_style->font);
@@ -2186,7 +2187,7 @@ draw_dot (GdkWindow    *window,
       gdk_draw_point (window, light_gc, x, y);
       gdk_draw_point (window, light_gc, x+1, y+1);
     }
-  else if (size == 3);
+  else if (size == 3)
     {
       gdk_draw_point (window, light_gc, x, y);
       gdk_draw_point (window, light_gc, x+1, y);
@@ -3106,7 +3107,7 @@ gtk_default_draw_focus (GtkStyle      *style,
   if (detail && !strcmp (detail, "add-mode"))
     {
       gdk_gc_set_line_attributes (style->black_gc, 1, GDK_LINE_ON_OFF_DASH, 0, 0);
-      gdk_gc_set_dashes (style->black_gc, 0, "\4\4", 2);
+      gdk_gc_set_dashes (style->black_gc, 0, (gint8 *)"\4\4", 2);
       
       gdk_draw_rectangle (window,
                           style->black_gc, FALSE,

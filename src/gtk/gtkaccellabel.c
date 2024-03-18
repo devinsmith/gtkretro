@@ -89,15 +89,11 @@ gtk_accel_label_class_init (GtkAccelLabelClass *class)
 {
   GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
-  GtkMiscClass *misc_class;
-  GtkLabelClass *label_class;
-  
+
   accel_label_class = class;
   object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
-  misc_class = (GtkMiscClass*) class;
-  label_class = (GtkLabelClass*) class;
-  
+
   parent_class = gtk_type_class (gtk_label_get_type ());
   
   gtk_object_add_arg_type ("GtkAccelLabel::accel_widget", GTK_TYPE_WIDGET, GTK_ARG_READWRITE, ARG_ACCEL_WIDGET);

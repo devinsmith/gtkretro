@@ -122,12 +122,10 @@ gtk_option_menu_class_init (GtkOptionMenuClass *class)
 {
   GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
-  GtkButtonClass *button_class;
   GtkContainerClass *container_class;
 
   object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
-  button_class = (GtkButtonClass*) class;
   container_class = (GtkContainerClass*) class;
 
   parent_class = gtk_type_class (gtk_button_get_type ());
@@ -453,7 +451,6 @@ gtk_option_menu_expose (GtkWidget      *widget,
 {
   GtkWidget *child;
   GdkEventExpose child_event;
-  gint remove_child;
 
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (GTK_IS_OPTION_MENU (widget), FALSE);
@@ -498,7 +495,6 @@ gtk_option_menu_expose (GtkWidget      *widget,
       if (remove_child)
 	gtk_option_menu_remove_contents (GTK_OPTION_MENU (widget));
 #else
-      remove_child = FALSE;
       child = GTK_BIN (widget)->child;
       child_event = *event;
       if (child && GTK_WIDGET_NO_WINDOW (child) &&

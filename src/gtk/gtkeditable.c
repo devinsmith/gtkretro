@@ -416,7 +416,6 @@ gtk_editable_insert_text (GtkEditable *editable,
 			  gint         new_text_length,
 			  gint        *position)
 {
-  GtkEditableClass *klass;
   gchar buf[64];
   gchar *text;
 
@@ -424,8 +423,6 @@ gtk_editable_insert_text (GtkEditable *editable,
   g_return_if_fail (GTK_IS_EDITABLE (editable));
 
   gtk_widget_ref (GTK_WIDGET (editable));
-
-  klass = GTK_EDITABLE_CLASS (GTK_OBJECT (editable)->klass);
 
   if (new_text_length <= 64)
     text = buf;
@@ -448,14 +445,10 @@ gtk_editable_delete_text (GtkEditable *editable,
 			  gint         start_pos,
 			  gint         end_pos)
 {
-  GtkEditableClass *klass;
-
   g_return_if_fail (editable != NULL);
   g_return_if_fail (GTK_IS_EDITABLE (editable));
 
   gtk_widget_ref (GTK_WIDGET (editable));
-
-  klass = GTK_EDITABLE_CLASS (GTK_OBJECT (editable)->klass);
 
   gtk_signal_emit (GTK_OBJECT (editable), editable_signals[DELETE_TEXT], start_pos, end_pos);
   gtk_signal_emit (GTK_OBJECT (editable), editable_signals[CHANGED]);

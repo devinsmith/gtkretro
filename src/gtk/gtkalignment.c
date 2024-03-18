@@ -234,14 +234,12 @@ static void
 gtk_alignment_size_request (GtkWidget      *widget,
 			    GtkRequisition *requisition)
 {
-  GtkAlignment *alignment;
   GtkBin *bin;
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (GTK_IS_ALIGNMENT (widget));
   g_return_if_fail (requisition != NULL);
 
-  alignment = GTK_ALIGNMENT (widget);
   bin = GTK_BIN (widget);
 
   requisition->width = GTK_CONTAINER (widget)->border_width * 2;

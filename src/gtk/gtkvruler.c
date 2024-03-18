@@ -134,7 +134,7 @@ static void
 gtk_vruler_draw_ticks (GtkRuler *ruler)
 {
   GtkWidget *widget;
-  GdkGC *gc, *bg_gc;
+  GdkGC *gc;
   GdkFont *font;
   gint i, j;
   gint width, height;
@@ -161,7 +161,6 @@ gtk_vruler_draw_ticks (GtkRuler *ruler)
   widget = GTK_WIDGET (ruler);
 
   gc = widget->style->fg_gc[GTK_STATE_NORMAL];
-  bg_gc = widget->style->bg_gc[GTK_STATE_NORMAL];
   font = widget->style->font;
   xthickness = widget->style->klass->xthickness;
   ythickness = widget->style->klass->ythickness;

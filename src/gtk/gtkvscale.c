@@ -300,14 +300,12 @@ static void
 gtk_vscale_clear_background (GtkRange    *range)
 {
   GtkWidget *widget;
-  GtkScale *scale;
   gint x, y, width, height;
   
   g_return_if_fail (range != NULL);
   g_return_if_fail (GTK_IS_SCALE (range));
   
   widget = GTK_WIDGET (range);
-  scale = GTK_SCALE (range);
   
   gtk_vscale_pos_background (GTK_VSCALE (widget), &x, &y, &width, &height);
   
@@ -362,7 +360,6 @@ gtk_vscale_size_allocate (GtkWidget     *widget,
                           GtkAllocation *allocation)
 {
   GtkRange *range;
-  GtkScale *scale;
   gint width, height;
   gint x, y;
   
@@ -374,7 +371,6 @@ gtk_vscale_size_allocate (GtkWidget     *widget,
   if (GTK_WIDGET_REALIZED (widget))
     {
       range = GTK_RANGE (widget);
-      scale = GTK_SCALE (widget);
       
       gtk_vscale_pos_trough (GTK_VSCALE (widget), &x, &y, &width, &height);
       

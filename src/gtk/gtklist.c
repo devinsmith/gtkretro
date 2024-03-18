@@ -2129,7 +2129,7 @@ gtk_list_update_extended_selection (GtkList *list,
   if (row >= length)
     row = length - 1;
 
-  if (list->selection_mode != GTK_SELECTION_EXTENDED || !list->anchor < 0)
+  if (list->selection_mode != GTK_SELECTION_EXTENDED)
     return;
 
   /* extending downwards */

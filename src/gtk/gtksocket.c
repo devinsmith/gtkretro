@@ -89,11 +89,9 @@ gtk_socket_get_type ()
 static void
 gtk_socket_class_init (GtkSocketClass *class)
 {
-  GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
   GtkContainerClass *container_class;
 
-  object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
   container_class = (GtkContainerClass*) class;
 

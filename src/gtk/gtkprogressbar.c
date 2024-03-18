@@ -24,15 +24,9 @@
  * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
  */
 
-#if HAVE_CONFIG_H
-#  include <config.h>
-#  if STDC_HEADERS
-#    include <string.h>
-#    include <stdio.h>
-#  endif
-#else
-#  include <stdio.h>
-#endif
+#include <config.h>
+#include <string.h>
+#include <stdio.h>
 
 #include "gtkprogressbar.h"
 #include "gtksignal.h"
@@ -417,7 +411,6 @@ gtk_progress_bar_act_mode_enter (GtkProgress *progress)
 {
   GtkProgressBar *pbar;
   GtkWidget *widget;
-  gint size;
 
   pbar = GTK_PROGRESS_BAR (progress);
   widget = GTK_WIDGET (progress);
@@ -427,8 +420,6 @@ gtk_progress_bar_act_mode_enter (GtkProgress *progress)
   if (pbar->orientation == GTK_PROGRESS_LEFT_TO_RIGHT ||
       pbar->orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
     {
-      size = MAX (2, widget->allocation.width / pbar->activity_blocks);
-
       if (pbar->orientation == GTK_PROGRESS_LEFT_TO_RIGHT)
 	{
 	  pbar->activity_pos = widget->style->klass->xthickness;
@@ -444,8 +435,6 @@ gtk_progress_bar_act_mode_enter (GtkProgress *progress)
     }
   else
     {
-      size = MAX (2, widget->allocation.height / pbar->activity_blocks);
-
       if (pbar->orientation == GTK_PROGRESS_TOP_TO_BOTTOM)
 	{
 	  pbar->activity_pos = widget->style->klass->ythickness;

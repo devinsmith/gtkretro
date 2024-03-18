@@ -78,12 +78,8 @@ static void
 gtk_statusbar_class_init (GtkStatusbarClass *class)
 {
   GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
-  GtkContainerClass *container_class;
 
   object_class = (GtkObjectClass *) class;
-  widget_class = (GtkWidgetClass *) class;
-  container_class = (GtkContainerClass *) class;
 
   parent_class = gtk_type_class (gtk_hbox_get_type ());
 
@@ -345,12 +341,8 @@ gtk_statusbar_destroy (GtkObject *object)
 static void
 gtk_statusbar_finalize (GtkObject *object)
 {
-  GtkStatusbar *statusbar;
-
   g_return_if_fail (object != NULL);
   g_return_if_fail (GTK_IS_STATUSBAR (object));
-
-  statusbar = GTK_STATUSBAR (object);
 
   GTK_OBJECT_CLASS (parent_class)->finalize (object);
 }

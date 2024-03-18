@@ -146,10 +146,6 @@ gtk_radio_button_get_arg (GtkObject      *object,
 			  GtkArg         *arg,
 			  guint           arg_id)
 {
-  GtkRadioButton *radio_button;
-
-  radio_button = GTK_RADIO_BUTTON (object);
-
   switch (arg_id)
     {
     default:
@@ -371,8 +367,6 @@ gtk_radio_button_draw_indicator (GtkCheckButton *check_button,
 				 GdkRectangle   *area)
 {
   GtkWidget *widget;
-  GtkButton *button;
-  GtkToggleButton *toggle_button;
   GtkStateType state_type;
   GtkShadowType shadow_type;
   GdkRectangle restrict_area;
@@ -386,8 +380,6 @@ gtk_radio_button_draw_indicator (GtkCheckButton *check_button,
   if (GTK_WIDGET_VISIBLE (check_button) && GTK_WIDGET_MAPPED (check_button))
     {
       widget = GTK_WIDGET (check_button);
-      button = GTK_BUTTON (check_button);
-      toggle_button = GTK_TOGGLE_BUTTON (check_button);
 
       state_type = GTK_WIDGET_STATE (widget);
       if ((state_type != GTK_STATE_NORMAL) &&

@@ -642,7 +642,6 @@ static void
 gtk_tree_item_paint (GtkWidget    *widget,
 		     GdkRectangle *area)
 {
-  GtkBin *bin;
   GdkRectangle child_area, item_area;
   GtkTreeItem* tree_item;
 
@@ -658,7 +657,6 @@ gtk_tree_item_paint (GtkWidget    *widget,
    */
   if (GTK_WIDGET_DRAWABLE (widget))
     {
-      bin = GTK_BIN (widget);
       tree_item = GTK_TREE_ITEM(widget);
 
       if (widget->state == GTK_STATE_NORMAL)
@@ -818,13 +816,11 @@ gtk_tree_item_focus_out (GtkWidget     *widget,
 static void
 gtk_real_tree_item_select (GtkItem *item)
 {    
-  GtkTreeItem *tree_item;
   GtkWidget *widget;
 
   g_return_if_fail (item != NULL);
   g_return_if_fail (GTK_IS_TREE_ITEM (item));
 
-  tree_item = GTK_TREE_ITEM (item);
   widget = GTK_WIDGET (item);
 
   gtk_widget_set_state (GTK_WIDGET (item), GTK_STATE_SELECTED);

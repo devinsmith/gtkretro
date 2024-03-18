@@ -233,7 +233,6 @@ gtk_preview_put (GtkPreview   *preview,
 		 gint          width,
 		 gint          height)
 {
-  GtkWidget *widget;
   GdkRectangle r1, r2, r3;
   guchar *src;
   guint bpp;
@@ -245,8 +244,6 @@ gtk_preview_put (GtkPreview   *preview,
 
   if (!preview->buffer)
     return;
-
-  widget = GTK_WIDGET (preview);
 
   r1.x = 0;
   r1.y = 0;
@@ -446,7 +443,7 @@ gtk_preview_finalize (GtkObject *object)
   preview = GTK_PREVIEW (object);
   if (preview->buffer)
     g_free (preview->buffer);
-  preview->type = (GtkPreviewType) -1;
+  preview->type = -1;
 
   (* GTK_OBJECT_CLASS (parent_class)->finalize) (object);
 }

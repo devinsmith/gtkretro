@@ -643,7 +643,6 @@ static void
 gtk_viewport_size_request (GtkWidget      *widget,
 			   GtkRequisition *requisition)
 {
-  GtkViewport *viewport;
   GtkBin *bin;
   GtkRequisition child_requisition;
 
@@ -651,7 +650,6 @@ gtk_viewport_size_request (GtkWidget      *widget,
   g_return_if_fail (GTK_IS_VIEWPORT (widget));
   g_return_if_fail (requisition != NULL);
 
-  viewport = GTK_VIEWPORT (widget);
   bin = GTK_BIN (widget);
 
   requisition->width = (GTK_CONTAINER (widget)->border_width +
@@ -784,13 +782,9 @@ static void
 gtk_viewport_adjustment_changed (GtkAdjustment *adjustment,
 				 gpointer       data)
 {
-  GtkViewport *viewport;
-
   g_return_if_fail (adjustment != NULL);
   g_return_if_fail (data != NULL);
   g_return_if_fail (GTK_IS_VIEWPORT (data));
-
-  viewport = GTK_VIEWPORT (data);
 }
 
 static void

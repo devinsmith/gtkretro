@@ -967,8 +967,6 @@ gtk_packer_size_request (GtkWidget      *widget,
   GtkContainer *container;
   GtkPackerChild *child;
   GList *children;
-  gint nvis_vert_children;
-  gint nvis_horz_children;
   gint width, height;
   gint maxWidth, maxHeight;
   
@@ -981,8 +979,6 @@ gtk_packer_size_request (GtkWidget      *widget,
 
   requisition->width = 0;
   requisition->height = 0;
-  nvis_vert_children = 0;
-  nvis_horz_children = 0;
   
   width = height = maxWidth = maxHeight = 0;
   

@@ -1879,7 +1879,7 @@ abort_column_resize (GtkCList *clist)
   if (GTK_CLIST_ADD_MODE(clist))
     {
       gdk_gc_set_line_attributes (clist->xor_gc, 1, GDK_LINE_ON_OFF_DASH, 0,0);
-      gdk_gc_set_dashes (clist->xor_gc, 0, "\4\4", 2);
+      gdk_gc_set_dashes (clist->xor_gc, 0, (gint8 *)"\4\4", 2);
     }
 }
 
@@ -2763,7 +2763,7 @@ static void
 real_remove_row (GtkCList *clist,
 		 gint      row)
 {
-  gint was_visible, was_selected;
+  gint was_visible;
   GList *list;
   GtkCListRow *clist_row;
 
@@ -2775,7 +2775,6 @@ real_remove_row (GtkCList *clist,
     return;
 
   was_visible = (gtk_clist_row_is_visible (clist, row) != GTK_VISIBILITY_NONE);
-  was_selected = 0;
 
   /* get the row we're going to delete */
   list = ROW_ELEMENT (clist, row);
@@ -2799,10 +2798,6 @@ real_remove_row (GtkCList *clist,
   if (clist->row_list_end == list)
     clist->row_list_end = g_list_previous (list);
   g_list_remove (list, clist_row);
-
-  /*if (clist->focus_row >=0 &&
-      (row <= clist->focus_row || clist->focus_row >= clist->rows))
-      clist->focus_row--;*/
 
   if (row < ROW_FROM_YPIXEL (clist, 0))
     clist->voffset += clist->row_height + CELL_SPACING;
@@ -3657,7 +3652,7 @@ toggle_add_mode (GtkCList *clist)
       GTK_CLIST_SET_FLAG (clist, CLIST_ADD_MODE);
       gdk_gc_set_line_attributes (clist->xor_gc, 1,
 				  GDK_LINE_ON_OFF_DASH, 0, 0);
-      gdk_gc_set_dashes (clist->xor_gc, 0, "\4\4", 2);
+      gdk_gc_set_dashes (clist->xor_gc, 0, (gint8 *)"\4\4", 2);
     }
   else
     {
@@ -4331,7 +4326,9 @@ sync_selection (GtkCList *clist,
 	clist->focus_row += d;
       if (clist->focus_row == -1 && clist->rows >= 1)
 	clist->focus_row = 0;
-      else if (clist->focus_row >= clist->rows)
+      else if (d < 0 && clist->focus_row >= clist->rows - 1)
+	clist->focus_row = clist->rows - 2;
+      else if (clist->focus_row >= clist->rows)	/* Paranoia */
 	clist->focus_row = clist->rows - 1;
     }
 
@@ -5197,7 +5194,7 @@ gtk_clist_button_release (GtkWidget      *widget,
 	{
 	  gdk_gc_set_line_attributes (clist->xor_gc, 1,
 				      GDK_LINE_ON_OFF_DASH, 0, 0);
-	  gdk_gc_set_dashes (clist->xor_gc, 0, "\4\4", 2);
+	  gdk_gc_set_dashes (clist->xor_gc, 0, (gint8 *)"\4\4", 2);
 	}
 
       width = new_column_width (clist, i, &x);
@@ -6158,24 +6155,16 @@ static void
 vadjustment_changed (GtkAdjustment *adjustment,
 		     gpointer       data)
 {
-  GtkCList *clist;
-
   g_return_if_fail (adjustment != NULL);
   g_return_if_fail (data != NULL);
-
-  clist = GTK_CLIST (data);
 }
 
 static void
 hadjustment_changed (GtkAdjustment *adjustment,
 		     gpointer       data)
 {
-  GtkCList *clist;
-
   g_return_if_fail (adjustment != NULL);
   g_return_if_fail (data != NULL);
-
-  clist = GTK_CLIST (data);
 }
 
 static void
@@ -6578,7 +6567,6 @@ gtk_clist_focus (GtkContainer     *container,
 {
   GtkCList *clist;
   GtkWidget *focus_child;
-  gint old_row;
 
   g_return_val_if_fail (container != NULL, FALSE);
   g_return_val_if_fail (GTK_IS_CLIST (container), FALSE);
@@ -6588,7 +6576,6 @@ gtk_clist_focus (GtkContainer     *container,
   
   clist = GTK_CLIST (container);
   focus_child = container->focus_child;
-  old_row = clist->focus_row;
 
   switch (direction)
     {
