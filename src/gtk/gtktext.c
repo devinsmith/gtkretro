@@ -1082,13 +1082,16 @@ gtk_text_forward_delete (GtkText *text,
   guint old_lines, old_height;
   GtkEditable *editable = GTK_EDITABLE (text);
   gboolean frozen = FALSE;
-  
+
+  old_lines = 0;
+  old_height = 0;
+
   g_return_val_if_fail (text != NULL, 0);
   g_return_val_if_fail (GTK_IS_TEXT (text), 0);
-  
+
   if (text->point.index + nchars > TEXT_LENGTH (text) || nchars <= 0)
     return FALSE;
-  
+
   if (!text->freeze_count && nchars > FREEZE_LENGTH)
     {
       gtk_text_freeze (text);
@@ -4450,8 +4453,11 @@ set_vertical_scroll (GtkText* text)
   SetVerticalScrollData data;
   gint height;
   gint orig_value;
-  
+
   data.pixel_height = 0;
+  data.mark.index = 0;
+  data.mark.offset = 0;
+
   line_params_iterate (text, &mark, NULL, FALSE, &data, set_vertical_scroll_iterator);
   
   text->vadj->upper = (float) data.pixel_height;
