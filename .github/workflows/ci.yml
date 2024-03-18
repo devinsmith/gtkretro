@@ -28,6 +28,7 @@ jobs:
       run: |
         cd ${{github.workspace}}/deps/glibretro
         mkdir build
+        cd build
         cmake ..
         cmake --build . --config $BUILD_TYPE
         cmake --install . --strip
