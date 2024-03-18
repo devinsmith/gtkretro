@@ -2304,8 +2304,9 @@ find_parent_dir_fullname(gchar* dirname)
   if(!getcwd(buffer2, MAXPATHLEN))
 #endif
     {
-      chdir(buffer);
-      cmpl_errno = errno;
+      if (chdir(buffer) != 0) {
+        cmpl_errno = errno;
+      }
 
       return NULL;
     }
